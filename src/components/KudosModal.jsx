@@ -1,9 +1,42 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import ToggleButton from 'react-bootstrap/ToggleButton';
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import { useState, useEffect } from 'react'
 
 function KudosModal(props) {
+  const API_URL = 'http://127.0.0.1:8000/api/'
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try{
+        const response = await fetch(API_URL+'users/');
+        const data = await response.json();
+        setUsers(data)
+      } catch (error){
+        console.error('Error :(')
+      }
+    }
+    (async () => await fetchUserData())();
+  }, []);
+
+  let jsonData={
+    'from_user' : 1,
+    'to_user': 3,
+    'message': 'Hello you are awesome'
+  }
+
+  function handleClick(event) {
+    fetch(API_URL+'kudos/', { 
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      mode: 'cors', 
+      body: JSON.stringify(jsonData)
+    })
+    props.onHide
+  }
   return (
     <Modal
       {...props}
@@ -20,34 +53,21 @@ function KudosModal(props) {
         <div className="form-floating">
           <select className="form-select" id="floatingSelect">
             <option defaultValue>Choose your co-worker</option>
-            <option value="1">Edgar Escobar</option>
-            <option value="2">Fernanda Vega</option>
-            <option value="3">Elizabeth Olsen</option>
+            {users.map(user => (
+              <option key={user.id} value={user.id}>{user.fullname}</option>
+            ))}
           </select>
           <label htmlFor="floatingSelect">Who you are recognizing</label>
-          {/* <div className='d-grid gap-2'>
-            <ToggleButtonGroup type="checkbox" defaultValue={[]} className="mb-2 mt-3">
-              <ToggleButton id="tbg-check-1" variant="outline-primary" value={1}>
-                Thank you
-              </ToggleButton>
-              <ToggleButton id="tbg-check-2" variant="outline-primary" value={2}>
-                Good job
-              </ToggleButton>
-              <ToggleButton id="tbg-check-3" variant="outline-primary" value={3}>
-                You rock!
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div> */}
           <div className="mb-3 mt-3">
             <label className="form-label">Writte something cool</label>
-            <textarea className="form-control" rows="3" placeholder="You are a great team member ..."></textarea>
+            <textarea id= "kudosMessage" className="form-control" rows="3" placeholder="You are a great team member ..."></textarea>
           </div>
         </div>
         
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide} variant="secondary">Close</Button>
-        <Button onClick={props.onHide} variant="success" >Send Kudos!</Button>
+        <Button onClick={handleClick} variant="success" >Send Kudos!</Button>
       </Modal.Footer>
     </Modal>
   );

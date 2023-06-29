@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom'
 
-function NavbarKudos() {
-
+function NavbarKudos(props) {
   return (
     <>
         <nav className="navbar navbar-expand-md bg-light mb-4">
           <div className="container-fluid">
-          <h4 className="p-1">My company</h4>
+          <h4 className="p-1">{props.company?.company_name}</h4>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
