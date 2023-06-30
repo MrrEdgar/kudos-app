@@ -26,8 +26,8 @@ function App() {
     <>
       <NavbarKudos company={userData.company}/>
       <Routes>
-        <Route path='/' element={<Home name={userData.fullname} kudos_left={userData.kudos_left}/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/' element={<Home name={userData.fullname} kudos_left={userData.kudos_left} user_id={userData.id} />}/>
+        <Route path='/dashboard' element={<Dashboard user_id={userData.id}/>}/>
       </Routes>
     </>
   )

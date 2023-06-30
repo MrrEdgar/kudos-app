@@ -20,24 +20,18 @@ const [modalShow, setModalShow] = useState(false);
             You have <code>{props.kudos_left} KUDOS</code> left for this week.
           </p>
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <Button
-              type="button"
-              className="btn btn-primary btn-lg px-4 gap-3"
-              onClick={() => setModalShow(true)}
-            >
+            <Button type="button" disabled={props.kudos_left <= 0 && true} className="btn btn-primary btn-lg px-4 gap-3" onClick={() => setModalShow(true)} >
               Recognize someone
             </Button>
             <Link to="/dashboard">
-                <button
-                type="button" className="btn btn-outline-secondary btn-lg px-4">
-                Kudos dashboard
-                </button>
+                <button type="button" className="btn btn-outline-info btn-lg px-4"> Kudos dashboard </button>
             </Link>
           </div>
         </div>
       </div>
 
       <KudosModal
+        user_id={props.user_id}
         show={modalShow}
         onHide={() => setModalShow(false)}
       />
